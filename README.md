@@ -52,3 +52,14 @@ This app will likely be archived after submission, but its spirit will live on..
 ---
 
 Want it in `.md` format? I can paste it as a downloadable file too!
+<p align="left">
+  <img src="https://i.imgur.com/hQdkB46.png"/>
+  <img src="https://i.imgur.com/fbm5MRm.png"/>
+  <img src="https://i.imgur.com/fIanOtM.png"/>
+  <img src="https://i.imgur.com/1DKzFES.png"/>
+</p>
+
+
+<p align="left">
+  <img src="https://media3.giphy.com/media/aUovxH8Vf9qDu/giphy.gif" width="300"/>
+</p>
