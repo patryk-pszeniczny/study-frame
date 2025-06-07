@@ -9,8 +9,8 @@ public class JButtonUtil {
     public enum ButtonType {
         DEFAULT, ICON
     }
-    public static void registerButton(ButtonType buttonType, JComponent jToolBar, String display, String iconSource, Dimension dimension,
-                                      ActionListener actionListener) {
+    public static JButton registerButton(ButtonType buttonType, String display, String iconSource,
+                                        Dimension dimension) {
         Icon icon = getIcon(iconSource);
         JButton button;
         if(buttonType==ButtonType.ICON){
@@ -21,29 +21,19 @@ public class JButtonUtil {
         button.setSize(dimension);
         button.setPreferredSize(dimension);
         button.setToolTipText(display);
-        if(actionListener!=null){
-            button.addActionListener(actionListener);
-        }
-        jToolBar.add(button);
+        return button;
     }
-    public static void registerButton(ButtonType buttonType, JComponent jToolBar, String display, String iconSource) {
-        registerButton(buttonType, jToolBar, display, iconSource, new Dimension(64, 64), null);
+    public static JButton registerButton(ButtonType buttonType, String display, String iconSource) {
+        return registerButton(buttonType, display, iconSource, new Dimension(64, 64));
     }
-    public static void registerButtonDefault(JComponent jToolBar, String display, String iconSource, Dimension dimension) {
-        registerButton(ButtonType.DEFAULT, jToolBar, display, iconSource, dimension, null);
+    public static JButton registerButtonDefault(String display, String iconSource, Dimension dimension) {
+        return registerButton(ButtonType.DEFAULT, display, iconSource, dimension);
     }
-    public static void registerButtonDefault(JComponent jToolBar, String display, String iconSource, Dimension dimension,
-                                             ActionListener actionListener) {
-        registerButton(ButtonType.DEFAULT, jToolBar, display, iconSource, dimension, actionListener);
+    public static JButton registerButton(String display, String iconSource) {
+        return registerButton(ButtonType.ICON, display, iconSource, new Dimension(64, 64));
     }
-    public static void registerButton(JComponent jToolBar, String display, String iconSource) {
-        registerButton(ButtonType.ICON, jToolBar, display, iconSource, new Dimension(64, 64), null);
-    }
-    public static void registerButton(JComponent jToolBar, String display, String iconSource, ActionListener actionListener) {
-        registerButton(ButtonType.ICON, jToolBar, display, iconSource, new Dimension(64, 64), actionListener);
-    }
-    public static void registerButton(ButtonType buttonType, JComponent jToolBar, String display, String iconSource, int width, int height) {
-        registerButton(buttonType, jToolBar, display, iconSource, new Dimension(width, height), null);
+    public static JButton registerButton(ButtonType buttonType, String display, String iconSource, int width, int height) {
+        return registerButton(buttonType, display, iconSource, new Dimension(width, height));
     }
     public static Icon getIcon(String iconSource) {
         if(!iconSource.matches("(?i)^.+\\.(jpg|jpeg|png|gif|bmp|webp|tiff)$")){
