@@ -1,5 +1,9 @@
 package uniquecode.study.controller;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
 import uniquecode.study.model.MatrixModel;
 import uniquecode.study.view.MainView;
 
@@ -33,6 +37,8 @@ public class MainController {
         // Przycisk oblicz osobno
         view.getCalculateButton().addActionListener(e -> calculateFromCombo());
 
+        //Wykres
+        view.getToolChartButton().addActionListener(e -> showPieChart());
 
         view.getTable().getModel().addTableModelListener(e -> {
             int row = e.getFirstRow();
@@ -139,6 +145,31 @@ public class MainController {
         });
     }
 
+    private void showPieChart() {
+        int[][] matrix = model.getMatrix();
+        DefaultPieDataset dataset = new DefaultPieDataset();
+
+        for (int i = 0; i < 5; i++) {
+            int sum = 0;
+            for (int j = 0; j < 5; j++) {
+                sum += matrix[i][j];
+            }
+            dataset.setValue("Wiersz " + (i + 1), sum);
+        }
+
+        JFreeChart chart = ChartFactory.createPieChart(
+                "Udział wartości wierszy", dataset, true, true, false);
+
+        ChartPanel chartPanel = new ChartPanel(chart);
+        JFrame chartFrame = new JFrame("Wykres kołowy");
+        chartFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        chartFrame.setSize(600, 400);
+        chartFrame.add(chartPanel);
+        chartFrame.setLocationRelativeTo(view);
+        chartFrame.setVisible(true);
+
+        view.updateStatus("Wyświetlono wykres kołowy");
+    }
     private void insertValue() {
         view.getStatusRight().setText("Status: Oblicza");
         try {

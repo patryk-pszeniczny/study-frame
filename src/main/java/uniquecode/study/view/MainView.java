@@ -1,12 +1,24 @@
 package uniquecode.study.view;
 
+import com.l2fprod.common.swing.JOutlookBar;
+import com.l2fprod.common.swing.TipModel;
+import com.l2fprod.common.swing.tips.DefaultTip;
+import com.l2fprod.common.swing.tips.DefaultTipModel;
+import com.l2fprod.common.swing.tips.TipLoader;
+import com.toedter.calendar.JDateChooser;
+import com.l2fprod.common.swing.JTipOfTheDay;
 import lombok.Getter;
-import uniquecode.study.model.MatrixModel;
 import uniquecode.study.util.JButtonUtil;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.Properties;
+
 @Getter
 public class MainView extends JFrame {
 
@@ -36,6 +48,7 @@ public class MainView extends JFrame {
     private JButton closeButton;
     private JButton helpButton;
     private JButton aboutButton;
+    private JButton toolChartButton;
     // Statusy
     private JLabel statusLeft;
     private JLabel statusRight;
@@ -44,6 +57,7 @@ public class MainView extends JFrame {
         super("Moje Okno - Aplikacja Tablicowa");
 
         initializeGUI();
+        this.showTipsOnStartup();
     }
 
     private void initializeGUI() {
@@ -69,6 +83,23 @@ public class MainView extends JFrame {
         menuBar.add(new JMenu("Pomoc"));
         return menuBar;
     }
+    private void showTipsOnStartup() {
+        try (InputStream input = getClass().getResourceAsStream("/tips.properties")) {
+            Properties props = new Properties();
+            props.load(input);
+
+            DefaultTipModel model = new DefaultTipModel();
+            for (String key : props.stringPropertyNames()) {
+                model.add(new DefaultTip(key, props.getProperty(key)));
+            }
+            JTipOfTheDay tip = new JTipOfTheDay(model);
+            tip.setToolTipText("Porady");
+            tip.showDialog(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Nie udało się załadować porad.", "Błąd", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     private JToolBar createToolBar() {
         JToolBar toolBar = new JToolBar();
@@ -84,27 +115,29 @@ public class MainView extends JFrame {
         toolMaxButton = JButtonUtil.registerButton("Max", "max.png");
         helpButton = JButtonUtil.registerButton("Help", "help.png");
         aboutButton = JButtonUtil.registerButton("About", "info.png");
-
+        toolChartButton = JButtonUtil.registerButton("Chart", "chart.png");
         toolBar.add(toolSaveButton);
         toolBar.add(printButton);
         toolBar.add(closeButton);
-        toolBar.addSeparator(new Dimension(10, 0));
+        toolBar.addSeparator(new Dimension(15, 0));
         toolBar.add(toolAddButton);
         toolBar.add(toolClearButton);
         toolBar.add(toolFillButton);
-        toolBar.addSeparator(new Dimension(10, 0));
+        toolBar.addSeparator(new Dimension(15, 0));
         toolBar.add(toolSumButton);
         toolBar.add(toolAvgButton);
         toolBar.add(toolMinButton);
         toolBar.add(toolMaxButton);
-        toolBar.addSeparator(new Dimension(10, 0));
+        toolBar.addSeparator(new Dimension(15, 0));
+        toolBar.add(toolChartButton);
         toolBar.add(helpButton);
-        toolBar.add(aboutButton);;
+        toolBar.add(aboutButton);
 
         return toolBar;
     }
 
     private JPanel createMainPanel() {
+
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
@@ -149,8 +182,6 @@ public class MainView extends JFrame {
         JScrollPane tableScrollPane = new JScrollPane(table);
         tableScrollPane.setPreferredSize(new Dimension(600, 150));
 
-        JPanel buttonPanel = new JPanel(new GridLayout(4, 1, 5, 5));
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         insertButton = JButtonUtil.registerButton(
                 JButtonUtil.ButtonType.DEFAULT, "Dodaj", "add.png", new Dimension(120, 24));
@@ -161,13 +192,18 @@ public class MainView extends JFrame {
         saveButton = JButtonUtil.registerButton(
                 JButtonUtil.ButtonType.DEFAULT, "Zapisz", "save.png", new Dimension(120, 24));
 
+        JOutlookBar bar = new JOutlookBar();
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(4, 1, 5, 5));
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         buttonPanel.add(insertButton);
         buttonPanel.add(clearButton);
         buttonPanel.add(fillButton);
         buttonPanel.add(saveButton);
+        bar.addTab("Zarządzanie", null, buttonPanel);
 
         tableAndButtonsPanel.add(tableScrollPane, BorderLayout.CENTER);
-        tableAndButtonsPanel.add(buttonPanel, BorderLayout.EAST);
+        tableAndButtonsPanel.add(bar, BorderLayout.EAST);
 
         mainPanel.add(tableAndButtonsPanel);
 
@@ -188,6 +224,25 @@ public class MainView extends JFrame {
         resultArea = new JTextArea(4, 50);
         resultPanel.add(new JScrollPane(resultArea), BorderLayout.CENTER);
 
+        JPanel calendarPanel = new JPanel();
+        calendarPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 10));
+        calendarPanel.add(new JLabel("Wybierz datę:"));
+
+        JDateChooser dateChooser = new JDateChooser();
+        dateChooser.setDateFormatString("yyyy-MM-dd"); // format: rrrr-mm-dd
+        calendarPanel.add(dateChooser);
+
+        dateChooser.getDateEditor().addPropertyChangeListener("date", e -> {
+            java.util.Date selectedDate = dateChooser.getDate();
+            if (selectedDate != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String formattedDate = sdf.format(selectedDate);
+                resultArea.append("Wybrano datę: " + formattedDate + "\n");
+                updateStatus("Wybrano datę: " + formattedDate);
+            }
+        });
+
+        mainPanel.add(calendarPanel);
         mainPanel.add(resultPanel);
         return mainPanel;
     }
