@@ -5,6 +5,9 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
 import uniquecode.study.model.MatrixModel;
+import uniquecode.study.model.operation.MatrixOperation;
+import uniquecode.study.model.storage.MatrixStorage;
+import uniquecode.study.model.factory.OperationFactory;
 import uniquecode.study.view.MainView;
 
 import javax.swing.*;
@@ -16,10 +19,14 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MainController {
     private final MatrixModel model;
     private final MainView view;
+    private final MatrixStorage storage;
+    private final OperationFactory so;
 
-    public MainController(MatrixModel model, MainView view) {
+    public MainController(MatrixModel model, MainView view, MatrixStorage storage, OperationFactory operationFactory) {
         this.model = model;
         this.view = view;
+        this.storage = storage;
+        this.so = operationFactory;
 
         // Przycisk Dodaj
         view.getInsertButton().addActionListener(e -> insertValue());
@@ -35,7 +42,7 @@ public class MainController {
         view.getToolSaveButton().addActionListener(e -> saveMatrix());
 
         // Przycisk oblicz osobno
-        view.getCalculateButton().addActionListener(e -> calculateFromCombo());
+        view.getCalculateButton().addActionListener(e -> calculate((String) view.getComboBox().getSelectedItem()));
 
         //Wykres
         view.getToolChartButton().addActionListener(e -> showPieChart());
@@ -85,27 +92,19 @@ public class MainController {
 
         // Pasek narzędziowy: suma, średnia, min, max
         view.getToolSumButton().addActionListener(e -> {
-            String wynik = "Suma: " + model.getSum();
-            view.getResultArea().append(wynik + "\n");
-            view.updateStatus("Obliczono sumę");
+            calculate("Suma");
         });
 
         view.getToolAvgButton().addActionListener(e -> {
-            String wynik = "Średnia: " + model.getAverage();
-            view.getResultArea().append(wynik + "\n");
-            view.updateStatus("Obliczono średnią");
+            calculate("Średnia");
         });
 
         view.getToolMinButton().addActionListener(e -> {
-            String wynik = "Minimum: " + model.getMin();
-            view.getResultArea().append(wynik + "\n");
-            view.updateStatus("Obliczono minimum");
+            calculate("Minimum");
         });
 
         view.getToolMaxButton().addActionListener(e -> {
-            String wynik = "Maksimum: " + model.getMax();
-            view.getResultArea().append(wynik + "\n");
-            view.updateStatus("Obliczono maksimum");
+            calculate("Maksimum");
         });
         view.getToolFillButton().addActionListener(e -> {
             for (int i = 0; i < 5; i++) {
@@ -197,7 +196,7 @@ public class MainController {
         if (result == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             try {
-                model.saveToFile(file);
+                this.storage.save(this.model.getMatrix(), file);
                 view.updateStatus("Zapisano do pliku: " + file.getName());
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(view, "Błąd zapisu do pliku", "Błąd", JOptionPane.ERROR_MESSAGE);
@@ -210,7 +209,7 @@ public class MainController {
         if (result == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             try {
-                this.model.printToFile(file);
+                this.storage.save(this.model.getMatrix(), file);
                 view.updateStatus("Wydruk zapisany do: " + file.getName());
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(view, "Błąd wydruku do pliku", "Błąd", JOptionPane.ERROR_MESSAGE);
@@ -224,14 +223,7 @@ public class MainController {
         if (result == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             try (Scanner scanner = new Scanner(file)) {
-                int[][] matrix = new int[5][5];
-                for (int i = 0; i < 5; i++) {
-                    for (int j = 0; j < 5; j++) {
-                        if (scanner.hasNextInt()) {
-                            matrix[i][j] = scanner.nextInt();
-                        }
-                    }
-                }
+                int[][] matrix = this.storage.load(file, scanner);
                 for (int i = 0; i < 5; i++) {
                     for (int j = 0; j < 5; j++) {
                         model.setValue(i, j, matrix[i][j]);
@@ -245,23 +237,13 @@ public class MainController {
         }
     }
 
-    private void calculateFromCombo() {
-        String selected = (String) view.getComboBox().getSelectedItem();
-        String wynik = "";
-
-        if (selected.equals("Suma")) {
-            wynik = "Suma: " + model.getSum();
-        } else if (selected.equals("Średnia")) {
-            wynik = "Średnia: " + model.getAverage();
-        } else if (selected.equals("Minimum")) {
-            wynik = "Minimum: " + model.getMin();
-        } else if (selected.equals("Maksimum")) {
-            wynik = "Maksimum: " + model.getMax();
-        }
-
-        if (!wynik.isEmpty()) {
+    private void calculate(String selected) {
+        MatrixOperation operation = so.getByName(selected);
+        if (operation != null) {
+            String wynik = operation.calculate(model.getMatrix());
             view.getResultArea().append(wynik + "\n");
             view.updateStatus("Wybrano: " + selected);
         }
+
     }
 }
