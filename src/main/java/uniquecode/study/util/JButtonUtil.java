@@ -2,7 +2,6 @@ package uniquecode.study.util;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.net.URL;
 
 public class JButtonUtil {
