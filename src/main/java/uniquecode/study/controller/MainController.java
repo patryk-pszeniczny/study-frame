@@ -5,9 +5,9 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
 import uniquecode.study.model.MatrixModel;
+import uniquecode.study.model.factory.OperationFactory;
 import uniquecode.study.model.operation.MatrixOperation;
 import uniquecode.study.model.storage.MatrixStorage;
-import uniquecode.study.model.factory.OperationFactory;
 import uniquecode.study.view.AboutWindow;
 import uniquecode.study.view.MainView;
 
@@ -25,8 +25,7 @@ public class MainController {
     private final MatrixStorage storage;
     private final OperationFactory operationFactory;
 
-    public MainController(MatrixModel model, MainView view,
-                          MatrixStorage storage, OperationFactory operationFactory) {
+    public MainController(MatrixModel model, MainView view, MatrixStorage storage, OperationFactory operationFactory) {
         this.model = model;
         this.view = view;
         this.storage = storage;
@@ -51,12 +50,14 @@ public class MainController {
         view.getHelpButton().addActionListener(e -> openHelpPageInFrame());
         view.getAboutButton().addActionListener(e -> openAboutWindow());
     }
+
     public void openAboutWindow() {
         AboutWindow aboutWindow = new AboutWindow();
         aboutWindow.setVisible(true);
         aboutWindow.setLocationRelativeTo(view);
         view.updateStatus("Otworzono okno 'O aplikacji'");
     }
+
     private void initTableListeners() {
         view.getTable().getModel().addTableModelListener(e -> {
             int row = e.getFirstRow();
@@ -115,7 +116,6 @@ public class MainController {
         view.getToolAddButton().addActionListener(e -> modifyMatrix(1, "Wszystkie wartości zwiększone o 1"));
         view.getToolClearButton().addActionListener(e -> modifyMatrix(-1, "Wszystkie wartości zmniejszono o 1"));
     }
-
     private void insertValue() {
         view.getStatusRight().setText("Status: Oblicza");
         try {
@@ -210,9 +210,7 @@ public class MainController {
     }
 
     private void fillMatrixWithRandomValues() {
-        int confirm = JOptionPane.showConfirmDialog(view,
-                "Czy na pewno chcesz nadpisać bieżącą macierz?",
-                "Potwierdzenie", JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(view, "Czy na pewno chcesz nadpisać bieżącą macierz?", "Potwierdzenie", JOptionPane.YES_NO_OPTION);
 
         if (confirm != JOptionPane.YES_OPTION) return;
         for (int i = 0; i < 5; i++)
@@ -234,6 +232,7 @@ public class MainController {
         JOptionPane.showMessageDialog(view, message, "Błąd danych", JOptionPane.ERROR_MESSAGE);
         view.getTable().setValueAt(model.getMatrix()[row][col], row, col);
     }
+
     private void openHelpPageInFrame() {
         try {
             URL resource = getClass().getResource("/help/index.html");

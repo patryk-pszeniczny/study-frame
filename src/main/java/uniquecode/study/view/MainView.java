@@ -11,6 +11,7 @@ import uniquecode.study.util.JButtonUtil;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Properties;
@@ -70,6 +71,7 @@ public class MainView extends JFrame {
         JMenuBar menuBar = new JMenuBar();
 
         this.fileMenu = new JMenu("Plik");
+        this.fileMenu.setMnemonic(KeyEvent.VK_P);
         openMenuItem = new JMenuItem("Otwórz");
         saveMenuItem = new JMenuItem("Zapisz");
         printMenuItem = new JMenuItem("Drukuj");
@@ -79,6 +81,7 @@ public class MainView extends JFrame {
         menuBar.add(fileMenu);
 
         this.editMenu = new JMenu("Edycja");
+        this.editMenu.setMnemonic(KeyEvent.VK_E);
         increaseMenuItem = new JMenuItem("Zwiększ");
         decreaseMenuItem = new JMenuItem("Zmniejsz");
         fillMenuItem = new JMenuItem("Wypełnij");
@@ -88,6 +91,7 @@ public class MainView extends JFrame {
         menuBar.add(editMenu);
 
         this.viewMenu = new JMenu("Widok");
+        this.viewMenu.setMnemonic(KeyEvent.VK_W);
         tipOfTheDayMenuItem = new JMenuItem("Porada Dnia");
         chartMenuItem = new JMenuItem("Wykres");
         viewMenu.add(tipOfTheDayMenuItem);
@@ -95,6 +99,7 @@ public class MainView extends JFrame {
         menuBar.add(viewMenu);
 
         this.calculationsMenu = new JMenu("Obliczenia");
+        this.calculationsMenu.setMnemonic(KeyEvent.VK_O);
         sumMenuItem = new JMenuItem("Suma");
         averageMenuItem = new JMenuItem("Średnia");
         minMenuItem = new JMenuItem("Minimum");
@@ -105,7 +110,8 @@ public class MainView extends JFrame {
         calculationsMenu.add(maxMenuItem);
         menuBar.add(calculationsMenu);
 
-        this.helpMenu = new JMenu("Pomoc");
+        this.helpMenu = new JMenu("Help");
+        this.helpMenu.setMnemonic(KeyEvent.VK_H);
         aboutMenuItem = new JMenuItem("O aplikacji");
         helpMenuItem = new JMenuItem("Pomoc");
         helpMenu.add(aboutMenuItem);
