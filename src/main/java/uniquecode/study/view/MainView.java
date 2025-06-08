@@ -17,51 +17,33 @@ import java.util.Properties;
 
 @Getter
 public class MainView extends JFrame {
-
-    // Komponenty
+    //Komponenty główne interfejsu
     private JTextField inputField;
-    private JSpinner rowSpinner;
-    private JSpinner colSpinner;
+    private JSpinner rowSpinner, colSpinner;
     private JTable table;
     private JTextArea resultArea;
     private JComboBox<String> comboBox;
-    private JButton insertButton;
-    private JButton clearButton;
-    private JButton saveButton;
-    private JButton calculateButton;
-    private JButton fillButton;
 
-    // Przyciski z toolbara
-    private JButton toolAddButton;
-    private JButton toolClearButton;
-    private JButton toolFillButton;
-    private JButton toolSaveButton;
-    private JButton toolSumButton;
-    private JButton toolAvgButton;
-    private JButton toolMinButton;
-    private JButton toolMaxButton;
-    private JButton printButton;
-    private JButton closeButton;
-    private JButton helpButton;
-    private JButton aboutButton;
-    private JButton toolChartButton;
-    // Statusy
-    private JLabel statusLeft;
-    private JLabel statusRight;
-    //Bar
-    private JMenu fileMenu;
-    private JMenu editMenu;
-    private JMenu viewMenu;
-    private JMenu calculationsMenu;
-    private JMenu helpMenu;
+    //Przyciski główne (UI)
+    private JButton insertButton, clearButton, saveButton, calculateButton, fillButton;
 
-    //MenuItems
+    //Przyciski z ToolBara
+    private JButton toolAddButton, toolClearButton, toolFillButton, toolSaveButton;
+    private JButton toolSumButton, toolAvgButton, toolMinButton, toolMaxButton;
+    private JButton printButton, closeButton, helpButton, aboutButton, toolChartButton;
 
+    //Pasek menu (JMenuBar)
+    private JMenu fileMenu, editMenu, viewMenu, calculationsMenu, helpMenu;
+
+    //Elementy menu (JMenuItem)
     private JMenuItem openMenuItem, saveMenuItem, printMenuItem;
     private JMenuItem increaseMenuItem, decreaseMenuItem, fillMenuItem;
-    private JMenuItem tipOfTheDayMenuItem, infoMenuItem, chartMenuItem;
     private JMenuItem sumMenuItem, averageMenuItem, minMenuItem, maxMenuItem;
+    private JMenuItem tipOfTheDayMenuItem, chartMenuItem;
     private JMenuItem aboutMenuItem, helpMenuItem;
+
+    //Pasek statusu
+    private JLabel statusLeft, statusRight;
 
     public MainView() {
         super("Moje Okno - Aplikacja Tablicowa");
