@@ -55,6 +55,7 @@ public class MainView extends JFrame {
 
     private void initializeGUI() {
         setSize(900, 600);
+        setMinimumSize(new Dimension(750, 500));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
