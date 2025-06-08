@@ -36,16 +36,19 @@ public class JButtonUtil {
         return registerButton(buttonType, display, iconSource, new Dimension(width, height));
     }
     public static Icon getIcon(String iconSource) {
-        if(!iconSource.matches("(?i)^.+\\.(jpg|jpeg|png|gif|bmp|webp|tiff)$")){
+        if (!iconSource.matches("(?i)^.+\\.(jpg|jpeg|png|gif|bmp|webp|tiff)$")) {
             return UIManager.getIcon(iconSource);
         }
+
         URL resource = JButtonUtil.class.getResource("/" + iconSource);
         if (resource == null) {
             System.err.println("Nie znaleziono ikony: " + iconSource);
             return null;
         }
+
         ImageIcon icon = new ImageIcon(resource);
-        icon.setImage(icon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
-        return icon;
+        Image scaled = icon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+        return new ImageIcon(scaled);
     }
+
 }

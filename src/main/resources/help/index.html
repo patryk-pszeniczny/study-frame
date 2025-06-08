@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Pomoc – Aplikacja Macierzowa</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 40px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        h1 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        ul {
+            margin-left: 20px;
+        }
+        .info {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #ecf0f1;
+            border-left: 6px solid #3498db;
+        }
+        footer {
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #888;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+<h1>Pomoc</h1>
+
+<p>Witamy w aplikacji służącej do operacji na macierzy 5x5. Program umożliwia wprowadzanie wartości, zapisywanie do pliku, drukowanie oraz wykonywanie obliczeń takich jak suma, średnia, minimum i maksimum. Dodatkowo dostępna jest wizualizacja danych w postaci wykresu kołowego.</p>
+
+<h2>Funkcje aplikacji:</h2>
+<ul>
+    <li><strong>Wstaw wartość:</strong> pozwala na wpisanie liczby do wybranej komórki macierzy.</li>
+    <li><strong>Wyczyść:</strong> usuwa wszystkie wartości z macierzy.</li>
+    <li><strong>Wypełnij losowo:</strong> wypełnia całą macierz liczbami losowymi z zakresu 0–99.</li>
+    <li><strong>Obliczenia:</strong> wykonuje operacje: suma, średnia, minimum, maksimum.</li>
+    <li><strong>Wykres:</strong> generuje wykres kołowy przedstawiający sumy wierszy.</li>
+    <li><strong>Zapisz/Wczytaj:</strong> obsługuje zapisywanie danych do pliku i ich odczyt.</li>
+    <li><strong>Drukuj:</strong> zapisuje aktualną macierz do pliku jako forma „wydruku”.</li>
+    <li><strong>Pasek narzędzi i menu:</strong> umożliwia szybki dostęp do wszystkich funkcji.</li>
+    <li><strong>Tip of the Day:</strong> system wskazówek na start.</li>
+</ul>
+
+<div class="info">
+    <h2>O projekcie</h2>
+    <p>Aplikacja została wykonana w języku Java z użyciem biblioteki Swing, a do wizualizacji użyto JFreeChart (wykresy) oraz komponentów graficznych takich jak JEditorPane i JMenuBar. Architektura aplikacji oparta jest o model MVC (Model-View-Controller).</p>
+    <p>W kodzie zastosowano m.in.:</p>
+    <ul>
+        <li>Osobne klasy: <code>MainView</code>, <code>MainController</code>, <code>MatrixModel</code></li>
+        <li>Obsługę zdarzeń w kontrolerze</li>
+        <li>Wielokrotny dostęp do funkcji przez przyciski, menu i toolbar</li>
+        <li>System wczytywania i zapisywania danych przy pomocy klasy <code>MatrixStorage</code></li>
+        <li>Fabrykę operacji matematycznych z <code>OperationFactory</code></li>
+    </ul>
+</div>
+
+<footer>
+    Projekt wykonał: <strong>Patryk Pszeniczny</strong><br>
+    Semestr: 4<br>
+    Rok: 2025<br>
+    Przedmiot: Projektowanie Aplikacji (proj)
+</footer>
+</body>
+</html>

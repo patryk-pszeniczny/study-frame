@@ -1,10 +1,8 @@
 package uniquecode.study.view;
 
 import com.l2fprod.common.swing.JOutlookBar;
-import com.l2fprod.common.swing.TipModel;
 import com.l2fprod.common.swing.tips.DefaultTip;
 import com.l2fprod.common.swing.tips.DefaultTipModel;
-import com.l2fprod.common.swing.tips.TipLoader;
 import com.toedter.calendar.JDateChooser;
 import com.l2fprod.common.swing.JTipOfTheDay;
 import lombok.Getter;
@@ -14,8 +12,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Properties;
 
@@ -52,6 +48,20 @@ public class MainView extends JFrame {
     // Statusy
     private JLabel statusLeft;
     private JLabel statusRight;
+    //Bar
+    private JMenu fileMenu;
+    private JMenu editMenu;
+    private JMenu viewMenu;
+    private JMenu calculationsMenu;
+    private JMenu helpMenu;
+
+    //MenuItems
+
+    private JMenuItem openMenuItem, saveMenuItem, printMenuItem;
+    private JMenuItem increaseMenuItem, decreaseMenuItem, fillMenuItem;
+    private JMenuItem tipOfTheDayMenuItem, infoMenuItem, chartMenuItem;
+    private JMenuItem sumMenuItem, averageMenuItem, minMenuItem, maxMenuItem;
+    private JMenuItem aboutMenuItem, helpMenuItem;
 
     public MainView() {
         super("Moje Okno - Aplikacja Tablicowa");
@@ -76,15 +86,56 @@ public class MainView extends JFrame {
 
     private JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
-        menuBar.add(new JMenu("Plik"));
-        menuBar.add(new JMenu("Edycja"));
-        menuBar.add(new JMenu("Widok"));
-        menuBar.add(new JMenu("Obliczenia"));
-        menuBar.add(new JMenu("Pomoc"));
+
+        this.fileMenu = new JMenu("Plik");
+        openMenuItem = new JMenuItem("Otwórz");
+        saveMenuItem = new JMenuItem("Zapisz");
+        printMenuItem = new JMenuItem("Drukuj");
+        fileMenu.add(openMenuItem);
+        fileMenu.add(saveMenuItem);
+        fileMenu.add(printMenuItem);
+        menuBar.add(fileMenu);
+
+        this.editMenu = new JMenu("Edycja");
+        increaseMenuItem = new JMenuItem("Zwiększ");
+        decreaseMenuItem = new JMenuItem("Zmniejsz");
+        fillMenuItem = new JMenuItem("Wypełnij");
+        editMenu.add(increaseMenuItem);
+        editMenu.add(decreaseMenuItem);
+        editMenu.add(fillMenuItem);
+        menuBar.add(editMenu);
+
+        this.viewMenu = new JMenu("Widok");
+        tipOfTheDayMenuItem = new JMenuItem("Porada Dnia");
+        infoMenuItem = new JMenuItem("Informacje");
+        chartMenuItem = new JMenuItem("Wykres");
+        viewMenu.add(tipOfTheDayMenuItem);
+        viewMenu.add(infoMenuItem);
+        viewMenu.add(chartMenuItem);
+        menuBar.add(viewMenu);
+
+        this.calculationsMenu = new JMenu("Obliczenia");
+        sumMenuItem = new JMenuItem("Suma");
+        averageMenuItem = new JMenuItem("Średnia");
+        minMenuItem = new JMenuItem("Minimum");
+        maxMenuItem = new JMenuItem("Maksimum");
+        calculationsMenu.add(sumMenuItem);
+        calculationsMenu.add(averageMenuItem);
+        calculationsMenu.add(minMenuItem);
+        calculationsMenu.add(maxMenuItem);
+        menuBar.add(calculationsMenu);
+
+        this.helpMenu = new JMenu("Pomoc");
+        aboutMenuItem = new JMenuItem("O aplikacji");
+        helpMenuItem = new JMenuItem("Pomoc");
+        helpMenu.add(aboutMenuItem);
+        helpMenu.add(helpMenuItem);
+        menuBar.add(helpMenu);
+
         return menuBar;
     }
-    private void showTipsOnStartup() {
-        try (InputStream input = getClass().getResourceAsStream("/tips.properties")) {
+    public void showTipsOnStartup() {
+        try (InputStream input = getClass().getResourceAsStream("/tips/tips.properties")) {
             Properties props = new Properties();
             props.load(input);
 
@@ -103,19 +154,19 @@ public class MainView extends JFrame {
 
     private JToolBar createToolBar() {
         JToolBar toolBar = new JToolBar();
-        toolSaveButton = JButtonUtil.registerButton("Save", "save.png");
-        printButton = JButtonUtil.registerButton("Print", "print.png");
-        closeButton = JButtonUtil.registerButton("Open", "open.png");
-        toolAddButton = JButtonUtil.registerButton("Add", "add.png");
-        toolClearButton = JButtonUtil.registerButton("Paste", "delete.png");
-        toolFillButton = JButtonUtil.registerButton("Fill", "network.png");
-        toolSumButton = JButtonUtil.registerButton("Sum", "sum.png");
-        toolAvgButton = JButtonUtil.registerButton("Average", "avg.png");
-        toolMinButton = JButtonUtil.registerButton("Min", "min.png");
-        toolMaxButton = JButtonUtil.registerButton("Max", "max.png");
-        helpButton = JButtonUtil.registerButton("Help", "help.png");
-        aboutButton = JButtonUtil.registerButton("About", "info.png");
-        toolChartButton = JButtonUtil.registerButton("Chart", "chart.png");
+        toolSaveButton = JButtonUtil.registerButton("Save", "images/save.png");
+        printButton = JButtonUtil.registerButton("Print", "images/print.png");
+        closeButton = JButtonUtil.registerButton("Open", "images/open.png");
+        toolAddButton = JButtonUtil.registerButton("Add", "images/add.png");
+        toolClearButton = JButtonUtil.registerButton("Paste", "images/delete.png");
+        toolFillButton = JButtonUtil.registerButton("Fill", "images/network.png");
+        toolSumButton = JButtonUtil.registerButton("Sum", "images/sum.png");
+        toolAvgButton = JButtonUtil.registerButton("Average", "images/avg.png");
+        toolMinButton = JButtonUtil.registerButton("Min", "images/min.png");
+        toolMaxButton = JButtonUtil.registerButton("Max", "images/max.png");
+        helpButton = JButtonUtil.registerButton("Help", "images/help.png");
+        aboutButton = JButtonUtil.registerButton("About", "images/info.png");
+        toolChartButton = JButtonUtil.registerButton("Chart", "images/chart.png");
         toolBar.add(toolSaveButton);
         toolBar.add(printButton);
         toolBar.add(closeButton);
@@ -184,13 +235,13 @@ public class MainView extends JFrame {
 
 
         insertButton = JButtonUtil.registerButton(
-                JButtonUtil.ButtonType.DEFAULT, "Dodaj", "add.png", new Dimension(120, 24));
+                JButtonUtil.ButtonType.DEFAULT, "Dodaj", "images/add.png", new Dimension(120, 24));
         clearButton = JButtonUtil.registerButton(
-                JButtonUtil.ButtonType.DEFAULT, "Wyzeruj", "delete.png", new Dimension(120, 24));
+                JButtonUtil.ButtonType.DEFAULT, "Wyzeruj", "images/delete.png", new Dimension(120, 24));
         fillButton = JButtonUtil.registerButton(
-                JButtonUtil.ButtonType.DEFAULT, "Wypełnij", "network.png", new Dimension(120, 24));
+                JButtonUtil.ButtonType.DEFAULT, "Wypełnij", "images/network.png", new Dimension(120, 24));
         saveButton = JButtonUtil.registerButton(
-                JButtonUtil.ButtonType.DEFAULT, "Zapisz", "save.png", new Dimension(120, 24));
+                JButtonUtil.ButtonType.DEFAULT, "Zapisz", "images/save.png", new Dimension(120, 24));
 
         JOutlookBar bar = new JOutlookBar();
         JPanel buttonPanel = new JPanel();
