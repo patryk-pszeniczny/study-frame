@@ -107,10 +107,8 @@ public class MainView extends JFrame {
 
         this.viewMenu = new JMenu("Widok");
         tipOfTheDayMenuItem = new JMenuItem("Porada Dnia");
-        infoMenuItem = new JMenuItem("Informacje");
         chartMenuItem = new JMenuItem("Wykres");
         viewMenu.add(tipOfTheDayMenuItem);
-        viewMenu.add(infoMenuItem);
         viewMenu.add(chartMenuItem);
         menuBar.add(viewMenu);
 

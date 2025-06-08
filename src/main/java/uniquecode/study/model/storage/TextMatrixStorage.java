@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class TextMatrixStorage implements MatrixStorage {
     @Override
-    public int[][] load(File file, Scanner scanner) throws IOException {
+    public int[][] load(File file, Scanner scanner) {
         int[][] matrix = new int[5][5];
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {

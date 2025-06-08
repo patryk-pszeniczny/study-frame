@@ -95,7 +95,6 @@ public class MainController {
         view.getFillMenuItem().addActionListener(e -> fillMatrixWithRandomValues());
 
         view.getTipOfTheDayMenuItem().addActionListener(e -> view.showTipsOnStartup());
-        view.getInfoMenuItem().addActionListener(e -> {}); // Placeholder
         view.getChartMenuItem().addActionListener(e -> showPieChart());
 
         view.getSumMenuItem().addActionListener(e -> calculate("Suma"));
